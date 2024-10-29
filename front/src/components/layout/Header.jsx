@@ -15,12 +15,15 @@ import { Link } from 'react-router-dom';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import logo from '../../assets/images/main_logo.webp';
+import { useNavigate } from 'react-router-dom';
 
 const pages = [
     { name: 'Solo', path: '/solo' },
     { name: 'Multijoueur', path: '/multiplayer' },
 ];
-const settings = ['Mon compte', 'Déconnexion'];
+const settings = [
+    { name: 'Mon compte', path: '/account' },
+];
 
 function Header({ darkModeChecked, setCheckedDarkMode }) {
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -39,6 +42,16 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleThemeChange = (event) => {
+        setCheckedDarkMode(event.target.checked);
+    };
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        navigate('/sign-in');
     };
 
     return (
@@ -146,7 +159,12 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                             </Button>
                         ))}
                     </Box>
-                    <FormControlLabel label="Mode sombre" control={<Switch checked={darkModeChecked} onChange={setCheckedDarkMode}  defaultChecked />} />
+                    <FormControlLabel
+                        label="Mode sombre"
+                        control={<Switch checked={darkModeChecked}
+                            onChange={handleThemeChange}
+                            defaultChecked />}
+                    />
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Mon profil">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
@@ -173,11 +191,18 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                            {settings.map((page) => (
+                                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                                    <Typography component={Link} to={page.path} sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}>
+                                        {page.name}
+                                    </Typography>
                                 </MenuItem>
                             ))}
+                            <MenuItem onClick={handleLogout}>
+                                <Typography sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}>
+                                   Déconnexion
+                                </Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>
