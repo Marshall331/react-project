@@ -13,6 +13,8 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import Switch from '@mui/material/Switch';
+import axios from 'axios';
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -83,17 +85,21 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
     }
     const data = new FormData(event.currentTarget);
 
-    const remeberMe = document.getElementById('rememberMe').checked;
+    // const remeberMe = document.getElementById('rememberMe').checked;
 
     const access = {
       email: data.get('email'),
       password: data.get('password'),
-      rememberMe: remeberMe
+      // rememberMe: remeberMe
     }
 
     console.log(access)
     event.preventDefault();
-  };
+
+    const response = axios.post('http://localhost:8080/login', access)
+    console.log(response)
+      ;
+  }
 
   const validateInputs = () => {
     const email = document.getElementById('email');
@@ -110,9 +116,9 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 2) {
       setPasswordError(true);
-      setPasswordErrorMessage('Le mot de passe doit contenir au minimum 6 caractères.');
+      setPasswordErrorMessage('Le mot de passe doit contenir au minimum 2 caractères.');
       isValid = false;
     } else {
       setPasswordError(false);

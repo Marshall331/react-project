@@ -1,13 +1,14 @@
 package com.kindsonthegenius.product_app.services;
 
-import com.kindsonthegenius.product_app.model.User;
-import com.kindsonthegenius.product_app.repositories.UserRepository;
+import java.util.List;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.kindsonthegenius.product_app.model.User;
+import com.kindsonthegenius.product_app.repositories.UserRepository;
 
 @Service
 public class UserService {
@@ -49,7 +50,7 @@ public class UserService {
             throw new UsernameNotFoundException("User does not exist in the database");
         }
 
-        if (!bCryptPasswordEncoder.matches(password, user.getPasswordHash())) {
+        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
             throw  new BadCredentialsException("The password is incorrect");
         }
 
