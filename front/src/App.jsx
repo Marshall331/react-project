@@ -41,7 +41,7 @@ function Content() {
             <Route path="/" element={<AuthGard><Home /></AuthGard>} />
             <Route path="/solo" element={<AuthGard><Solo /></AuthGard>} />
             <Route path="/multiplayer" element={<AuthGard><Multiplayer /></AuthGard>} />
-            <Route path="/login" element={<SignIn />} />
+            <Route path="/login" element={<SignIn darkModeChecked={darkMode} setCheckedDarkMode={setDarkMode} />} />
           </Routes>
         {/* </div> */}
       </Suspense>

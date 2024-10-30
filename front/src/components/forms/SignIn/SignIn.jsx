@@ -135,8 +135,7 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
         label="Mode sombre"
         control={<Switch
           checked={darkModeChecked}
-          onChange={handleThemeChange}
-          defaultChecked />}
+          onChange={handleThemeChange} />}
       />
       <Card variant="outlined">
         <Typography
