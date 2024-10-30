@@ -78,7 +78,7 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     if (emailError || passwordError) {
       event.preventDefault();
       return;
@@ -88,17 +88,25 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
     // const remeberMe = document.getElementById('rememberMe').checked;
 
     const access = {
-      email: data.get('email'),
+      username: data.get('email'),
       password: data.get('password'),
       // rememberMe: remeberMe
     }
 
     console.log(access)
     event.preventDefault();
-
-    const response = axios.post('http://localhost:8080/login', access)
-    console.log(response)
-      ;
+    try {
+      const response = await axios.post('http://localhost:8080/login', access);
+      console.log('Réponse de l\'API :', response.data);
+    } catch (error) {
+      if (error.response) {
+        console.error('Réponse de l\'API avec erreur :', error.response.data);
+      } else if (error.request) {
+        console.error('Aucune réponse reçue :', error.request);
+      } else {
+        console.error('Erreur lors de la configuration de la requête :', error.message);
+      }
+    }
   }
 
   const validateInputs = () => {
