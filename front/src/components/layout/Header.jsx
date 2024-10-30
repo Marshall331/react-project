@@ -66,8 +66,6 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
@@ -126,8 +124,6 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
@@ -162,8 +158,7 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                     <FormControlLabel
                         label="Mode sombre"
                         control={<Switch checked={darkModeChecked}
-                            onChange={handleThemeChange}
-                            defaultChecked />}
+                            onChange={handleThemeChange} />}
                     />
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Mon profil">
@@ -200,7 +195,7 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                             ))}
                             <MenuItem onClick={handleLogout}>
                                 <Typography sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}>
-                                   Déconnexion
+                                    Déconnexion
                                 </Typography>
                             </MenuItem>
                         </Menu>

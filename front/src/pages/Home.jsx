@@ -1,4 +1,5 @@
-import {useEffect} from 'react';
+import { useEffect } from 'react';
+import Typography from '@mui/material/Typography';
 
 function Home() {
 
@@ -10,9 +11,9 @@ function Home() {
     }, []);
 
     return (
-        <div>
-            Home works
-        </div>
+        <Typography>
+            Home page works!
+        </Typography>
     );
 }
 

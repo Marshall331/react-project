@@ -1,4 +1,5 @@
 import {useEffect} from 'react';
+import Typography from '@mui/material/Typography';
 
 function Solo() {
 
@@ -10,9 +11,9 @@ function Solo() {
     }, []);
 
     return (
-        <div>
-            Solo works
-        </div>
+        <Typography>
+            Solo page works!
+        </Typography>
     );
 }
 

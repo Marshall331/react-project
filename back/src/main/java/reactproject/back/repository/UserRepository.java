@@ -5,10 +5,16 @@
 
 package reactproject.back.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import reactproject.back.model.User;
+
 /**
  *
  * @author 1
  */
-public interface UserRepository {
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
 
 }

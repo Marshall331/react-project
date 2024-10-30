@@ -1,4 +1,5 @@
-import {useEffect} from 'react';
+import { useEffect } from 'react';
+import Typography from '@mui/material/Typography';
 
 function Multiplayer() {
 
@@ -10,9 +11,9 @@ function Multiplayer() {
     }, []);
 
     return (
-        <div>
+        <Typography>
             Multiplayer works
-        </div>
+        </Typography>
     );
 }
 

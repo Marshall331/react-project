@@ -57,6 +57,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
+
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -81,10 +82,17 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    const remeberMe = document.getElementById('rememberMe').checked;
+
+    const access = {
       email: data.get('email'),
       password: data.get('password'),
-    });
+      rememberMe: remeberMe
+    }
+
+    console.log(access)
+    event.preventDefault();
   };
 
   const validateInputs = () => {
@@ -194,7 +202,7 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
             />
           </FormControl>
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={<Checkbox id="rememberMe" value="remember" color="primary" />}
             label="Se souvenir de moi"
           />
           <ForgotPassword open={open} handleClose={handleClose} />

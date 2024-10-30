@@ -5,10 +5,18 @@
 
 package reactproject.back.service;
 
+import java.util.List;
+
+import reactproject.back.model.User;
+
 /**
  *
  * @author 1
  */
 public interface UserService {
+
+    public User saveUser(User user);
+
+    public List<User> getAllUsers();
 
 }
