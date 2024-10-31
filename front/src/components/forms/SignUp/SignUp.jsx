@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
@@ -10,13 +10,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import ForgotPassword from './ForgotPassword';
 import Switch from '@mui/material/Switch';
-import axios from 'axios';
-import { useAuth } from '../../context/AuthContext';
-import Alert from '@mui/material/Alert';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -37,7 +31,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+const SignUpContainer = styled(Stack)(({ theme }) => ({
   height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
   minHeight: '100%',
   padding: theme.spacing(2),
@@ -60,11 +54,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
-
-  const { login } = useAuth();
-
-  const [loading, setLoading] = React.useState(false);
+export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
 
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
@@ -72,49 +62,21 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
-  const [connectionFailed, setConnectionFailed] = React.useState(false);
-  const [connectionFailedMessage, setConnectionFailedMessage] = React.useState('');
+  const [firstNameError, setFirstNameError] = React.useState(false);
+  const [firstNameErrorMessage, setFirstNameErrorMessage] = React.useState('');
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = async (email, password, rememberMe) => {
-    setLoading(true)
-
-    const access = {
-      username: email,
-      password: password
-    }
-
-    try {
-      const response = await axios.post('http://localhost:8080/login', access);
-      console.log(response.data)
-
-      if (response.status === 200) {
-        login(rememberMe)
-      }
-    } finally {
-      setConnectionFailed(true);
-      setConnectionFailedMessage('Informations de connexion incorrects !');
-      setLoading(false);
-    }
-  }
+  const [lastNameError, setLastNameError] = React.useState(false);
+  const [lastNameErrorMessage, setLastNameErrorMessage] = React.useState('');
 
   const validateInputs = () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const rememberMe = document.getElementById('rememberMe').checked;
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
 
     let isValid = true;
 
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
       setEmailErrorMessage('Merci de saisir une adresse e-mail valide.');
       isValid = false;
@@ -123,7 +85,7 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
       setEmailErrorMessage('');
     }
 
-    if (!password || password.length < 4) {
+    if (!password.value || password.value.length < 4) {
       setPasswordError(true);
       setPasswordErrorMessage('Le mot de passe doit contenir au minimum 4 caractères.');
       isValid = false;
@@ -132,13 +94,43 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
       setPasswordErrorMessage('');
     }
 
-    if (isValid) {
-      handleSubmit(email, password, rememberMe)
+    if (!firstName.value || firstName.value.length < 1) {
+      setFirstNameError(true);
+      setFirstNameErrorMessage('Merci de saisir un nom.');
+      isValid = false;
+    } else {
+      setFirstNameError(false);
+      setFirstNameErrorMessage('');
     }
+
+    if (!lastName.value || lastName.value.length < 1) {
+      setLastNameError(true);
+      setLastNameErrorMessage('Merci de saisir un prénom.');
+      isValid = false;
+    } else {
+      setLastNameError(false);
+      setLastNameErrorMessage('');
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = (event) => {
+    if (firstNameError || emailError || passwordError) {
+      event.preventDefault();
+      return;
+    }
+    const data = new FormData(event.currentTarget);
+    console.log({
+      name: data.get('name'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      password: data.get('password'),
+    });
   };
 
   return (
-    <SignInContainer direction="column" justifyContent="space-between">
+    <SignUpContainer direction="column" justifyContent="space-between">
       <FormControlLabel
         sx={{
           display: 'flex',
@@ -157,94 +149,89 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
         <Typography
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', textAlign: 'center' }}
         >
-          Connexion
+          Créer un compte
         </Typography>
-        {connectionFailed ? <Alert severity="warning">{connectionFailedMessage}</Alert> : ""}
         <Box
-          noValidate
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            gap: 2,
-          }}
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
           <FormControl>
-            <FormLabel htmlFor="email">E-mail</FormLabel>
+            <FormLabel htmlFor="firstName">Nom</FormLabel>
             <TextField
-              error={emailError}
-              helperText={emailErrorMessage}
-              id="email"
-              type="email"
-              name="email"
-              placeholder="exemple@email.com"
-              autoComplete="email"
-              autoFocus
-              required
+              autoComplete="firstName"
+              name="firstName"
               fullWidth
-              variant="outlined"
-              color={emailError ? 'error' : 'primary'}
-              sx={{ ariaLabel: 'email' }}
+              id="firstName"
+              placeholder="Babela"
+              error={firstNameError}
+              helperText={firstNameErrorMessage}
+              color={firstNameError ? 'error' : 'primary'}
             />
           </FormControl>
           <FormControl>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <FormLabel htmlFor="password">Mot de passe</FormLabel>
-              <Link
-                component="button"
-                type="button"
-                onClick={handleClickOpen}
-                variant="body2"
-                sx={{ alignSelf: 'baseline' }}
-              >
-                Mot de passe oublié ?
-              </Link>
-            </Box>
+            <FormLabel htmlFor="lastName">Prénom</FormLabel>
             <TextField
-              error={passwordError}
-              helperText={passwordErrorMessage}
+              autoComplete="lastName"
+              name="lastName"
+              fullWidth
+              id="lastName"
+              placeholder="Guychel"
+              error={lastNameError}
+              helperText={lastNameErrorMessage}
+              color={lastNameError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="email">E-mail</FormLabel>
+            <TextField
+              fullWidth
+              id="email"
+              placeholder="example@gmail.com"
+              name="email"
+              autoComplete="email"
+              variant="outlined"
+              error={emailError}
+              helperText={emailErrorMessage}
+              color={passwordError ? 'error' : 'primary'}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="password">Mot de passe</FormLabel>
+            <TextField
+              fullWidth
               name="password"
               placeholder="••••••"
               type="password"
               id="password"
-              autoComplete="current-password"
-              autoFocus
-              required
-              fullWidth
+              autoComplete="new-password"
               variant="outlined"
+              error={passwordError}
+              helperText={passwordErrorMessage}
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
-          <FormControlLabel
-            control={<Checkbox id="rememberMe" value="remember" color="primary" />}
-            label="Se souvenir de moi"
-          />
-          <ForgotPassword open={open} handleClose={handleClose} />
-          <LoadingButton
-            type='submit'
-            color="primary"
-            onClick={validateInputs}
-            loading={loading}
-            loadingPosition="end"
-            endIcon={<SendIcon />}
+          <Button
+            type="submit"
+            fullWidth
             variant="contained"
-            size='large'
+            onClick={validateInputs}
           >
-            Se connecter
-          </LoadingButton>
+            Créer mon compte
+          </Button>
           <Typography sx={{ textAlign: 'center' }}>
-            Pas de compte ?{' '}
+            Vous avez déjà un compte ?{' '}
             <span>
               <Link
-                href="/register"
+                href="/login"
                 sx={{ alignSelf: 'center' }}
               >
-                Créer un compte
+                Se connecter
               </Link>
             </span>
           </Typography>
         </Box>
       </Card>
-    </SignInContainer>
+    </SignUpContainer>
   );
 }

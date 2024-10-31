@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import logo from '../../assets/images/main_logo.webp';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const pages = [
     { name: 'Solo', path: '/solo' },
@@ -26,6 +26,8 @@ const settings = [
 ];
 
 function Header({ darkModeChecked, setCheckedDarkMode }) {
+    const { logout } = useAuth();
+
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -46,12 +48,6 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
 
     const handleThemeChange = (event) => {
         setCheckedDarkMode(event.target.checked);
-    };
-
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        navigate('/sign-in');
     };
 
     return (
@@ -193,7 +189,7 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                                     </Typography>
                                 </MenuItem>
                             ))}
-                            <MenuItem onClick={handleLogout}>
+                            <MenuItem onClick={logout}>
                                 <Typography sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}>
                                     Déconnexion
                                 </Typography>
