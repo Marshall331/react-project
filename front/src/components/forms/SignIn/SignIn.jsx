@@ -2,7 +2,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
@@ -170,55 +169,53 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
           }}
         >
           <FormControl>
-            <FormLabel htmlFor="email">E-mail</FormLabel>
             <TextField
               error={emailError}
               helperText={emailErrorMessage}
               id="email"
               type="email"
               name="email"
-              placeholder="exemple@email.com"
+              label="E-mail"
+              variant="outlined"
               autoComplete="email"
               autoFocus
-              required
               fullWidth
-              variant="outlined"
               color={emailError ? 'error' : 'primary'}
               sx={{ ariaLabel: 'email' }}
             />
           </FormControl>
           <FormControl>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <FormLabel htmlFor="password">Mot de passe</FormLabel>
-              <Link
-                component="button"
-                type="button"
-                onClick={handleClickOpen}
-                variant="body2"
-                sx={{ alignSelf: 'baseline' }}
-              >
-                Mot de passe oublié ?
-              </Link>
-            </Box>
             <TextField
               error={passwordError}
               helperText={passwordErrorMessage}
               name="password"
-              placeholder="••••••"
               type="password"
               id="password"
               autoComplete="current-password"
               autoFocus
-              required
               fullWidth
+              label="Mot de passe"
               variant="outlined"
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
-          <FormControlLabel
-            control={<Checkbox id="rememberMe" value="remember" color="primary" />}
-            label="Se souvenir de moi"
-          />
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <FormControlLabel
+              control={<Checkbox id="rememberMe" value="remember" color="primary" />}
+              label="Se souvenir de moi"
+            />
+            <Link
+              component="button"
+              type="button"
+              onClick={handleClickOpen}
+              variant="body2"
+              sx={{ alignSelf: 'baseline' }}
+            >
+              Mot de passe oublié ?
+            </Link>
+          </Box>
+
           <ForgotPassword open={open} handleClose={handleClose} />
           <LoadingButton
             type='submit'

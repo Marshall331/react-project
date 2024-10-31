@@ -1,8 +1,7 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
@@ -11,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -56,11 +56,8 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 
 export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
 
-  const [emailError, setEmailError] = useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState('');
-
-  const [passwordError, setPasswordError] = useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [pseudoError, setPseudoError] = useState(false);
+  const [pseudoErrorMessage, setPseudoErrorMessage] = useState('');
 
   const [firstNameError, setFirstNameError] = useState(false);
   const [firstNameErrorMessage, setFirstNameErrorMessage] = useState('');
@@ -68,33 +65,40 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
   const [lastNameError, setLastNameError] = useState(false);
   const [lastNameErrorMessage, setLastNameErrorMessage] = useState('');
 
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+
+  const [password, setPassword] = useState('');
+  const maxLength = 15;
+
   const validateInputs = () => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const firstName = document.getElementById('firstName');
-    const lastName = document.getElementById('lastName');
+    const pseudo = document.getElementById('pseudo').value.trim();
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    console.log("pseudo : " + pseudo)
+    console.log("nom : " + firstName)
+    console.log("prénom : " + lastName)
+    console.log("email : " + email)
+    console.log("mot de passe : " + password)
 
     let isValid = true;
 
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Merci de saisir une adresse e-mail valide.');
+    if (!pseudo || pseudo.length < 1) {
+      setPseudoError(true);
+      setPseudoErrorMessage('Merci de saisir votre pseudo.');
       isValid = false;
     } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
+      setPseudoError(false);
+      setPseudoErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 4) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Le mot de passe doit contenir au minimum 4 caractères.');
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
-
-    if (!firstName.value || firstName.value.length < 1) {
+    if (!firstName || firstName.length < 1) {
       setFirstNameError(true);
       setFirstNameErrorMessage('Merci de saisir un nom.');
       isValid = false;
@@ -103,13 +107,31 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
       setFirstNameErrorMessage('');
     }
 
-    if (!lastName.value || lastName.value.length < 1) {
+    if (!lastName || lastName.length < 1) {
       setLastNameError(true);
       setLastNameErrorMessage('Merci de saisir un prénom.');
       isValid = false;
     } else {
       setLastNameError(false);
       setLastNameErrorMessage('');
+    }
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setEmailError(true);
+      setEmailErrorMessage('Merci de saisir une adresse e-mail valide.');
+      isValid = false;
+    } else {
+      setEmailError(false);
+      setEmailErrorMessage('');
+    }
+
+    if (!password || password.length < 4) {
+      setPasswordError(true);
+      setPasswordErrorMessage('Le mot de passe doit contenir au minimum 4 caractères.');
+      isValid = false;
+    } else {
+      setPasswordError(false);
+      setPasswordErrorMessage('');
     }
 
     return isValid;
@@ -157,60 +179,98 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
           sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         >
           <FormControl>
-            <FormLabel htmlFor="firstName">Nom</FormLabel>
             <TextField
-              autoComplete="firstName"
-              name="firstName"
+              autoComplete="pseudo"
+              name="pseudo"
               fullWidth
-              id="firstName"
-              placeholder="Babela"
-              error={firstNameError}
-              helperText={firstNameErrorMessage}
-              color={firstNameError ? 'error' : 'primary'}
+              id="pseudo"
+              label="Pseudo"
+              variant="outlined"
+              error={pseudoError}
+              helperText={pseudoErrorMessage}
+              color={pseudoError ? 'error' : 'primary'}
             />
           </FormControl>
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
+            <FormControl>
+              <TextField
+                autoComplete="firstName"
+                name="name"
+                fullWidth
+                id="firstName"
+                label="Nom"
+                variant="outlined"
+                error={firstNameError}
+                helperText={firstNameErrorMessage}
+                color={firstNameError ? 'error' : 'primary'}
+              />
+            </FormControl>
+
+            <FormControl>
+              <TextField
+                autoComplete="lastName"
+                name="lastName"
+                fullWidth
+                id="lastName"
+                label="Prénom"
+                variant="outlined"
+                error={lastNameError}
+                helperText={lastNameErrorMessage}
+                color={lastNameError ? 'error' : 'primary'}
+              />
+            </FormControl>
+          </Box>
+
           <FormControl>
-            <FormLabel htmlFor="lastName">Prénom</FormLabel>
-            <TextField
-              autoComplete="lastName"
-              name="lastName"
-              fullWidth
-              id="lastName"
-              placeholder="Guychel"
-              error={lastNameError}
-              helperText={lastNameErrorMessage}
-              color={lastNameError ? 'error' : 'primary'}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="email">E-mail</FormLabel>
             <TextField
               fullWidth
               id="email"
-              placeholder="example@gmail.com"
               name="email"
               autoComplete="email"
+              label="E-mail"
               variant="outlined"
               error={emailError}
               helperText={emailErrorMessage}
               color={passwordError ? 'error' : 'primary'}
             />
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="password">Mot de passe</FormLabel>
+
+          <FormControl variant="outlined" sx={{ '--hue': Math.min(password.length * 10, 120) }}>
             <TextField
               fullWidth
               name="password"
-              placeholder="••••••"
-              type="password"
               id="password"
               autoComplete="new-password"
-              variant="outlined"
+              label="Mot de passe"
               error={passwordError}
               helperText={passwordErrorMessage}
               color={passwordError ? 'error' : 'primary'}
+              onChange={(event) => setPassword(event.target.value)}
+              value={password}
             />
+
+            <LinearProgress
+              variant="determinate"
+              value={Math.min((password.length * 100) / maxLength, 100)}
+              sx={{
+                marginTop: '0.25em',
+                '& .MuiLinearProgress-bar': {
+                  backgroundColor: 'hsl(var(--hue) 80% 30%) !important'
+                },
+              }}
+            />
+
+            <Typography
+              level="body-xs"
+              color="hsl(var(--hue) 80% 30%) !important"
+              sx={{ alignSelf: 'flex-end' }}
+            >
+              {getPasswordStrengthLabel(password.length)}
+            </Typography>
+
           </FormControl>
+
           <Button
             type="submit"
             fullWidth
@@ -235,3 +295,19 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
     </SignUpContainer>
   );
 }
+
+const getPasswordStrengthLabel = (value) => {
+  if (value < 4) return 'Très faible';
+  if (value >= 4 && value < 7) return 'Faible';
+  if (value >= 7 && value < 12) return 'Fort';
+  if (value >= 12) return 'Très fort';
+  return '';
+};
+
+const getPasswordStrengthPercent = (value) => {
+  if (value < 4) return '20';
+  if (value >= 4 && value < 7) return '40';
+  if (value >= 7 && value < 12) return '65';
+  if (value >= 12) return '100';
+  return '';
+};
