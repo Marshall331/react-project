@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useState} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -56,17 +56,17 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
 
 export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
 
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
-  const [firstNameError, setFirstNameError] = React.useState(false);
-  const [firstNameErrorMessage, setFirstNameErrorMessage] = React.useState('');
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [firstNameErrorMessage, setFirstNameErrorMessage] = useState('');
 
-  const [lastNameError, setLastNameError] = React.useState(false);
-  const [lastNameErrorMessage, setLastNameErrorMessage] = React.useState('');
+  const [lastNameError, setLastNameError] = useState(false);
+  const [lastNameErrorMessage, setLastNameErrorMessage] = useState('');
 
   const validateInputs = () => {
     const email = document.getElementById('email');
@@ -122,7 +122,7 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
     }
     const data = new FormData(event.currentTarget);
     console.log({
-      name: data.get('name'),
+      firstName: data.get('firstName'),
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),

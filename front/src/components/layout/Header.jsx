@@ -16,6 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import logo from '../../assets/images/main_logo.webp';
 import { useAuth } from '../context/AuthContext';
+import Divider from '@mui/material/Divider';
 
 const pages = [
     { name: 'Solo', path: '/solo' },
@@ -183,15 +184,16 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((page) => (
-                                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                                    <Typography component={Link} to={page.path} sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}>
+                                <MenuItem disabled aliog key={page.name} onClick={handleCloseNavMenu}>
+                                    <Typography sx={{ color: 'inherit', textAlign: 'center', textDecoration: 'none', width: '100%', paddingLeft: '1em', paddingRight: '1em' }} component={Link} to={page.path}>
                                         {page.name}
                                     </Typography>
                                 </MenuItem>
                             ))}
-                            <MenuItem onClick={logout}>
-                                <Typography sx={{ textAlign: 'center', color: 'inherit', textDecoration: 'none' }}>
-                                    Déconnexion
+                            <Divider></Divider>
+                            <MenuItem onClick={logout} sx={{ color: 'red' }}>
+                                <Typography sx={{ width: '100%', paddingLeft: '1em', paddingRight: '1em' }}>
+                                    Se déconnecter
                                 </Typography>
                             </MenuItem>
                         </Menu>
