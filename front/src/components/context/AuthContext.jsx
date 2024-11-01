@@ -1,10 +1,13 @@
 import { createContext, useContext, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
+
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
         return localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
     });
@@ -18,12 +21,14 @@ export const AuthProvider = ({ children }) => {
             sessionStorage.setItem('isAuthenticated', 'true'); 
             localStorage.removeItem('isAuthenticated');
         }
+        navigate("/");
     };
 
     const logout = () => {
         setIsAuthenticated(false);
         localStorage.removeItem('isAuthenticated'); 
         sessionStorage.removeItem('isAuthenticated');
+        navigate("/login");
     };
 
     return (

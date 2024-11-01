@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -15,7 +15,6 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -63,18 +62,18 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
 
   const { login } = useAuth();
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
+  const [connectionFailed, setConnectionFailed] = useState(false);
+  const [connectionFailedMessage, setConnectionFailedMessage] = useState('');
 
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
-  const [connectionFailed, setConnectionFailed] = React.useState(false);
-  const [connectionFailedMessage, setConnectionFailedMessage] = React.useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -88,8 +87,8 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
     setLoading(true)
 
     const access = {
-      username: email,
-      password: password
+      email,
+      password
     }
 
     try {
@@ -101,7 +100,7 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
       }
     } finally {
       setConnectionFailed(true);
-      setConnectionFailedMessage('Informations de connexion incorrects !');
+      setConnectionFailedMessage('Informations de connexion incorrects.');
       setLoading(false);
     }
   }
@@ -178,7 +177,6 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
               label="E-mail"
               variant="outlined"
               autoComplete="email"
-              autoFocus
               fullWidth
               color={emailError ? 'error' : 'primary'}
               sx={{ ariaLabel: 'email' }}
@@ -192,7 +190,6 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
               type="password"
               id="password"
               autoComplete="current-password"
-              autoFocus
               fullWidth
               label="Mot de passe"
               variant="outlined"
@@ -222,8 +219,6 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
             color="primary"
             onClick={validateInputs}
             loading={loading}
-            loadingPosition="end"
-            endIcon={<SendIcon />}
             variant="contained"
             size='large'
           >
