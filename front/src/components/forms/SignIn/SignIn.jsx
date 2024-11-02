@@ -96,16 +96,45 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
       console.log(response.data)
 
       if (response.status === 200) {
+        setLoading(false);
+        setConnectionFailed(false);
+        setConnectionFailedMessage('');
         login(rememberMe)
       }
-    } finally {
+    } catch (error) {
+      setLoading(false);
       setConnectionFailed(true);
-      setConnectionFailedMessage('Informations de connexion incorrects.');
+      if (error.response) {
+        console.log(error)
+
+        if (error.response.data) {
+          setConnectionFailedMessage(error.response.data)
+
+          if (error.response.data.includes("compte")) {
+            setEmailError(true)
+            setEmailErrorMessage('Aucun compte associé à cet e-mail.\n')
+          }
+          if (error.response.data.includes("mot de passe")) {
+            setPasswordError(true)
+            setPasswordErrorMessage('Mot de passe du compte incorrect.\n')
+          }
+
+        } else {
+          setConnectionFailedMessage("La connexion a échoué.");
+        }
+
+      } else {
+        setConnectionFailedMessage("Connexion au serveur impossible.");
+      }
+    } finally {
       setLoading(false);
     }
   }
 
   const validateInputs = () => {
+    setConnectionFailed(false);
+    setConnectionFailedMessage('');
+
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const rememberMe = document.getElementById('rememberMe').checked;
@@ -165,6 +194,7 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
             flexDirection: 'column',
             width: '100%',
             gap: 2,
+            marginTop: '1em',
           }}
         >
           <FormControl>

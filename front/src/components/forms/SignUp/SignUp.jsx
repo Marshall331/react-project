@@ -82,6 +82,9 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
   const maxLength = 15;
 
   const validateInputs = () => {
+    setCreationFailed(false);
+    setCreationFailedMessage('');
+
     const username = document.getElementById('pseudo').value.trim();
     const firstName = document.getElementById('firstName').value.trim();
     const lastName = document.getElementById('lastName').value.trim();
@@ -165,24 +168,26 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
       setLoading(false);
       setCreationFailed(true);
       if (error.response) {
-        console.log(error.response.data)
+        console.log(error)
 
         if (error.response.data) {
-          setCreationFailedMessage("Création du compte impossible.");
+          setCreationFailedMessage(error.response.data);
+
           if (error.response.data.includes("pseudo")) {
             setUsernameError(true);
             setUsernameErrorMessage('Ce pseudo existe déjà.');
-            setCreationFailedMessage(error.response.data);
           }
-
           if (error.response.data.includes("email")) {
             setEmailError(true);
-            setEmailErrorMessage('Cet email existe déjà.');
-            setCreationFailedMessage(error.response.data);
+            setEmailErrorMessage('Cet email existe déjà.\n');
           }
+
+        } else {
+          setCreationFailedMessage("La connexion a échoué.");
         }
+
       } else {
-        setCreationFailedMessage("An unexpected error occurred. Please try again.");
+        setCreationFailedMessage("Connexion au serveur impossible.");
       }
     } finally {
       setLoading(false);
@@ -213,7 +218,9 @@ export default function SignUp({ darkModeChecked, setCheckedDarkMode }) {
         </Typography>
         {creationFailed ? <Alert severity="warning">{creationFailedMessage}</Alert> : ""}
         <Box
-          sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+          sx={{
+            display: 'flex', flexDirection: 'column', gap: 2, marginTop: '1em',
+          }}
         >
           <FormControl>
             <TextField

@@ -46,13 +46,16 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> newUser(@RequestBody() User user) {
-        String result = userService.addUser(user);
-        if (result.equals("")) {
-            return ResponseEntity.ok("Creation successufull!");
-        } else {
+        try {
+            String result = userService.addUser(user);
+            if (result.equals("")) {
+                return ResponseEntity.ok("Creation successufull!");
+            }
 
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error occurred, error : " + e);
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
     }
 
     @DeleteMapping("/user/{id}")
@@ -63,13 +66,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         try {
-            boolean isAuthenticated = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+            String result = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
 
-            if (isAuthenticated) {
+            if (result.equals("")) {
                 session.setAttribute("user", loginRequest.getEmail());
                 return ResponseEntity.ok("Login was successful!");
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error occurred, error : " + e);

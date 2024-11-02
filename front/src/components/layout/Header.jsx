@@ -184,7 +184,7 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((page) => (
-                                <MenuItem disabled aliog key={page.name} onClick={handleCloseNavMenu}>
+                                <MenuItem disabled key={page.name} onClick={handleCloseNavMenu}>
                                     <Typography sx={{ color: 'inherit', textAlign: 'center', textDecoration: 'none', width: '100%', paddingLeft: '1em', paddingRight: '1em' }} component={Link} to={page.path}>
                                         {page.name}
                                     </Typography>

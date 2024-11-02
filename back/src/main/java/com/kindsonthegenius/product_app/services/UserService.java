@@ -2,8 +2,6 @@ package com.kindsonthegenius.product_app.services;
 
 import java.util.List;
 
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +32,10 @@ public class UserService {
         String result = "";
 
         if (this.userRepository.findByEmail(user.getEmail()) != null) {
-            result += "Un compte avec cette email existe déjà.";
+            result += "Un compte avec cette email existe déjà. \n";
         }
         if (this.userRepository.findByUsername(user.getUsername()) != null) {
-            result += "Un compte avec ce pseudo existe déjà.";
+            result += "Un compte avec ce pseudo existe déjà. \n";
         }
         if (result.equals("")) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -54,22 +52,20 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public boolean authenticate(String email, String password) {
+    public String authenticate(String email, String password) {
+
+        String result = "";
         User user = userRepository.findByEmail(email);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User does not exist in the database");
+        if (user == null || !user.getEmail().equals(email)) {
+            result += "Ce compte n\'existe pas. \n";
+        } else {
+            if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                result += "Le mot de passe est incorrect. \n";
+            }
         }
 
-        if (!user.getEmail().equals(email)) {
-            throw new UsernameNotFoundException("This email does not exist in the database");
-        }
-
-        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
-            throw new BadCredentialsException("The password is incorrect");
-        }
-
-        return true;
+        return result;
     }
 
 }
