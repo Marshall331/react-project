@@ -6,12 +6,15 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import LoadingButton from '@mui/lab/LoadingButton';
-import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import { Card, Container } from '../Container';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
+import { createAccountApp } from '@/services/AuthService.jsx'
+import { useAuth } from '@/hooks/useAuth';
 
 export default function SignUp() {
+
+  const { createAccount } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
@@ -110,13 +113,14 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/register', account);
+      const response = await createAccountApp(account);
 
       if (response.status === 200) {
-        console.log(response.data)
         setLoading(false);
         setCreationFailed(false);
         setCreationFailedMessage('');
+
+        createAccount()
       }
 
     } catch (error) {
@@ -153,7 +157,7 @@ export default function SignUp() {
     <Container direction="column" justifyContent="space-between">
 
       <ThemeSwitch />
-      
+
       <Card variant="outlined">
         <Typography
 

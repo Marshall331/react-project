@@ -13,7 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import ThemeSwitch from '@/components/Theme/ThemeSwitch';
-import logo from '@/assets/images/main_logo.webp';
+import logo from '@/assets/images/main_logo.svg';
 import { useAuth } from '@/hooks/useAuth';
 import Divider from '@mui/material/Divider';
 
@@ -52,7 +52,6 @@ function Header() {
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"
-                        noWrap
                         component={Link}
                         to="/"
                         sx={{
@@ -63,12 +62,7 @@ function Header() {
                             textDecoration: 'none',
                         }}
                     >
-                        <img
-                            src={logo}
-                            className="rounded-circle mt-2 mb-2"
-                            height="80px"
-                            alt="Main Logo"
-                        />
+                        <img src={logo} className="App-logo" height="65px" alt="logo" />
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -185,7 +179,7 @@ function Header() {
                             <Divider />
 
                             <ThemeSwitch />
-                            
+
                             <Divider />
 
                             <MenuItem onClick={logout} sx={{ color: 'red' }}>

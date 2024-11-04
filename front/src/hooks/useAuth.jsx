@@ -31,8 +31,12 @@ export const AuthProvider = ({ children }) => {
         navigate("/login");
     };
 
+    const createAccount = () => {
+        navigate('/login?created_account=true');
+    };
+
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, createAccount }}>
             {children}
         </AuthContext.Provider>
     );

@@ -7,12 +7,12 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import ForgotPassword from './ForgotPassword';
-import axios from 'axios';
 import { useAuth } from '@/hooks/useAuth';
 import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Card, Container } from '../Container';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
+import { loginToApp } from '@/services/AuthService.jsx'
 
 export default function SignIn() {
 
@@ -48,14 +48,13 @@ export default function SignIn() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/login', access);
-      console.log(response.data)
+      const response = await loginToApp(access)
 
       if (response.status === 200) {
         setLoading(false);
         setConnectionFailed(false);
         setConnectionFailedMessage('');
-        
+
         login(rememberMe)
       }
     } catch (error) {
@@ -123,7 +122,7 @@ export default function SignIn() {
 
   return (
     <Container direction="column" justifyContent="space-between">
-      <ThemeSwitch/>
+      <ThemeSwitch />
       <Card variant="outlined">
         <Typography
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', textAlign: 'center' }}
