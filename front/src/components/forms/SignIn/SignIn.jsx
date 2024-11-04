@@ -99,6 +99,7 @@ export default function SignIn({ darkModeChecked, setCheckedDarkMode }) {
         setLoading(false);
         setConnectionFailed(false);
         setConnectionFailedMessage('');
+        
         login(rememberMe)
       }
     } catch (error) {
