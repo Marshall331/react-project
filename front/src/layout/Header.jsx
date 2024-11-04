@@ -12,10 +12,9 @@ import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import logo from '../../assets/images/main_logo.webp';
-import { useAuth } from '../context/AuthContext';
+import ThemeSwitch from '@/components/Theme/ThemeSwitch';
+import logo from '@/assets/images/main_logo.webp';
+import { useAuth } from '@/hooks/useAuth';
 import Divider from '@mui/material/Divider';
 
 const pages = [
@@ -26,7 +25,7 @@ const settings = [
     { name: 'Mon compte', path: '/account' },
 ];
 
-function Header({ darkModeChecked, setCheckedDarkMode }) {
+function Header() {
     const { logout } = useAuth();
 
     const [anchorElNav, setAnchorElNav] = useState(null);
@@ -45,10 +44,6 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
-    };
-
-    const handleThemeChange = (event) => {
-        setCheckedDarkMode(event.target.checked);
     };
 
     return (
@@ -152,11 +147,7 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                             </Button>
                         ))}
                     </Box>
-                    <FormControlLabel
-                        label="Mode sombre"
-                        control={<Switch checked={darkModeChecked}
-                            onChange={handleThemeChange} />}
-                    />
+
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Mon profil">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
@@ -190,9 +181,15 @@ function Header({ darkModeChecked, setCheckedDarkMode }) {
                                     </Typography>
                                 </MenuItem>
                             ))}
-                            <Divider></Divider>
+
+                            <Divider />
+
+                            <ThemeSwitch />
+                            
+                            <Divider />
+
                             <MenuItem onClick={logout} sx={{ color: 'red' }}>
-                                <Typography sx={{ width: '100%', paddingLeft: '1em', paddingRight: '1em' }}>
+                                <Typography textAlign={'center'} width={'100%'}>
                                     Se déconnecter
                                 </Typography>
                             </MenuItem>

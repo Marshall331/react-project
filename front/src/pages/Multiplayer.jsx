@@ -4,7 +4,9 @@ import Typography from '@mui/material/Typography';
 function Multiplayer() {
 
     useEffect(() => {
-        document.title = 'Mode multijoueurs';
+        document.title = 'Mode multijoueur';
+        console.log('Le composant multijoueur est monté');
+
         return () => {
             document.title = '';
         };

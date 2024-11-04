@@ -5,6 +5,8 @@ function Solo() {
 
     useEffect(() => {
         document.title = 'Mode solo';
+        console.log('Le composant solo est monté');
+
         return () => {
             document.title = '';
         };

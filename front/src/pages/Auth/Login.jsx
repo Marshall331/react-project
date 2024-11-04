@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import SignIn from '../../components/forms/SignIn/SignIn';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import SignIn from '@/components/Auth/SignIn/SignIn';
 
 function Login() {
 
@@ -12,18 +10,10 @@ function Login() {
         };
     }, []);
 
-    const [darkMode, setDarkMode] = useState(true);
-
-    const theme = createTheme({
-        palette: {
-            mode: darkMode ? 'dark' : 'light',
-        },
-    });
-
     return (
-        <ThemeProvider theme={theme}>
-            <SignIn darkModeChecked={darkMode} setCheckedDarkMode={setDarkMode}></SignIn>
-        </ThemeProvider>
+        <>
+            <SignIn />
+        </>
     );
 }
 

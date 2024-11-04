@@ -5,6 +5,8 @@ function Home() {
 
     useEffect(() => {
         document.title = 'Accueil';
+        console.log('Le composant Accueil est monté');
+
         return () => {
             document.title = '';
         };
