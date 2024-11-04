@@ -5,13 +5,16 @@ import { AuthProvider, useAuth } from './hooks/useAuth';
 import Header from './layout/Header';
 import PrivateRoutes from './routes/PrivateRoutes';
 import PublicRoutes from './routes/PublicRoutes';
+import { ThemeProvider } from './hooks/useTheme.jsx';
 
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
           <Content />
-      </AuthProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

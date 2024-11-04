@@ -4,8 +4,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
 
 function ForgotPassword({ open, handleClose }) {
   return (
@@ -22,7 +23,7 @@ function ForgotPassword({ open, handleClose }) {
       }}
     >
       <Typography
-        sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', marginTop:"0.25em", textAlign: 'center' }}
+        sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', marginTop: "0.25em", textAlign: 'center' }}
       >
         Réinitialiser le mot de passe
       </Typography>
@@ -33,17 +34,21 @@ function ForgotPassword({ open, handleClose }) {
           Entrez l&apos;adresse e-mail de votre compte, et nous vous enverrons un lien pour
           réinitialiser votre mot de passe.
         </DialogContentText>
-        <OutlinedInput
-          autoFocus
-          required
-          margin="dense"
-          id="email"
-          name="email"
-          label="Adresse e-mail"
-          placeholder="Adresse e-mail"
-          type="email"
-          fullWidth
-        />
+        <FormControl>
+          <TextField
+            // error={emailError}
+            // helperText={emailErrorMessage}
+            id="email"
+            type="email"
+            name="email"
+            label="E-mail"
+            variant="outlined"
+            autoComplete="email"
+            fullWidth
+            color="primary"
+            sx={{ ariaLabel: 'email' }}
+          />
+        </FormControl>
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
         <Button onClick={handleClose}>Annuler</Button>
