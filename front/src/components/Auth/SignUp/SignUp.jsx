@@ -9,7 +9,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import { Card, Container } from '../Container';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
-import { createAccountApp } from '@/services/AuthService.jsx'
+import { createAccount as createAccountAPI } from '@/services/AuthService.jsx'
 import { useAuth } from '@/hooks/useAuth';
 
 export default function SignUp() {
@@ -113,7 +113,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await createAccountApp(account);
+      const response = await createAccountAPI(account);
 
       if (response.status === 200) {
         setLoading(false);

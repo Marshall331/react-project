@@ -16,9 +16,9 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         if (rememberMe) {
             localStorage.setItem('isAuthenticated', 'true');
-            sessionStorage.removeItem('isAuthenticated'); 
+            sessionStorage.removeItem('isAuthenticated');
         } else {
-            sessionStorage.setItem('isAuthenticated', 'true'); 
+            sessionStorage.setItem('isAuthenticated', 'true');
             localStorage.removeItem('isAuthenticated');
         }
         navigate("/");
@@ -26,17 +26,29 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setIsAuthenticated(false);
-        localStorage.removeItem('isAuthenticated'); 
+        localStorage.removeItem('isAuthenticated');
         sessionStorage.removeItem('isAuthenticated');
-        navigate("/login");
+        navigate('/login');
     };
 
     const createAccount = () => {
-        navigate('/login?created_account=true');
+        navigate('/');
+
+        setTimeout(() => {
+            navigate('/login?createdAccount=true');
+        }, 100);
+    };
+
+    const resetPassword = () => {
+        navigate('/');
+
+        setTimeout(() => {
+            navigate('/login?resetPassword=true');
+        }, 100);
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, createAccount }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, createAccount, resetPassword }}>
             {children}
         </AuthContext.Provider>
     );

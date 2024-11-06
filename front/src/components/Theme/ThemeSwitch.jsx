@@ -8,19 +8,17 @@ export default function ThemeSwitch() {
   const { darkMode, toggleTheme } = useTheme()
 
   return (
-    <>
-      <FormControlLabel
-        sx={{
-          display: 'flex',
-          justifyContent: 'end',
-          width: 'max-content',
-          color: (theme) => theme.palette.text.primary,
-          marginLeft: 'auto',
-        }}
-        label={(darkMode ? "Mode nuit" : "Mode jour")}
-        control={<MaterialUISwitch checked={darkMode} onChange={toggleTheme} />}
-      />
-    </>
+    <FormControlLabel
+      sx={{
+        display: 'flex',
+        justifyContent: 'end',
+        width: 'max-content',
+        color: (theme) => theme.palette.text.primary,
+        marginLeft: 'auto',
+      }}
+      label={(darkMode ? "Mode nuit" : "Mode jour")}
+      control={<MaterialUISwitch checked={darkMode} onChange={toggleTheme} />}
+    />
   );
 }
 

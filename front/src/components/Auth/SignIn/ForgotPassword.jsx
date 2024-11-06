@@ -9,10 +9,18 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Alert from '@mui/material/Alert';
+import { useAuth } from '@/hooks/useAuth';
+import { resetPassword as resetPasswordAPI} from '@/services/AuthService.jsx'
 
 function ForgotPassword({ open, handleClose }) {
 
+  const { resetPassword } = useAuth();
+
   const [loading, setLoading] = useState(false);
+
+  const [resetPasswordFailed, setResetPasswordFailed] = useState(false);
+  const [resetPasswordMessage, setResetPasswordFailedMessage] = useState('');
 
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
@@ -20,28 +28,37 @@ function ForgotPassword({ open, handleClose }) {
   const handleSubmit = async (email) => {
     setLoading(true)
 
-    console.log(email)
-
-    // const access = {
-    //   email,
-    // }
-
     try {
-      // const response = await loginToApp(access)
+      const response = await resetPasswordAPI(email)
 
-      // if (response.status === 200) {
-        // setLoading(false);
-        // setConnectionFailed(false);
-        // setConnectionFailedMessage('');
+      if (response.status == 200) {
+        resetPassword()
+        handleClose()
+      }
 
-        // login(rememberMe)
-      // }
+    } catch (error) {
+      setLoading(false);
+
+      if (error.response) {
+        console.log(error)
+
+        if (error.response.data) {
+          setEmailError(true)
+          setEmailErrorMessage('Aucun compte associé à cet e-mail.\n')
+        }
+
+      } else {
+        setResetPasswordFailed(true);
+        setResetPasswordFailedMessage("Connexion au serveur impossible.");
+      }
     } finally {
       setLoading(false);
     }
   }
 
   const validateInputs = () => {
+    setResetPasswordFailed(false);
+    setResetPasswordFailedMessage('');
 
     const email = document.getElementById('emailReset').value;
 
@@ -74,9 +91,12 @@ function ForgotPassword({ open, handleClose }) {
       >
         Réinitialiser le mot de passe
       </Typography>
+
       <DialogContent
         sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
       >
+        {resetPasswordFailed ? <Alert severity="warning">{resetPasswordMessage}</Alert> : ""}
+
         <DialogContentText>
           Entrez l&apos;adresse e-mail de votre compte et nous vous enverrons un lien pour
           réinitialiser votre mot de passe.
@@ -100,17 +120,18 @@ function ForgotPassword({ open, handleClose }) {
       <DialogActions sx={{ pb: 3, px: 3 }}>
         <Button onClick={handleClose}>Annuler</Button>
         <LoadingButton
-            type='submit'
-            color="primary"
-            onClick={validateInputs}
-            loading={loading}
-            variant="contained"
-            size='medium'
-          >
-            Réinitialiser
-          </LoadingButton>
+          type='submit'
+          color="primary"
+          onClick={validateInputs}
+          loading={loading}
+          variant="contained"
+          size='medium'
+        >
+          Réinitialiser
+        </LoadingButton>
       </DialogActions>
     </Dialog>
+
   );
 }
 

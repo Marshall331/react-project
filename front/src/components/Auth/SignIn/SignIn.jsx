@@ -12,7 +12,7 @@ import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Card, Container } from '../Container';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
-import { loginToApp } from '@/services/AuthService.jsx'
+import { loginToApp as loginAPI } from '@/services/AuthService.jsx'
 
 export default function SignIn() {
 
@@ -48,7 +48,7 @@ export default function SignIn() {
     }
 
     try {
-      const response = await loginToApp(access)
+      const response = await loginAPI(access)
 
       if (response.status === 200) {
         setLoading(false);
