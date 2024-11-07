@@ -2,7 +2,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 
-export const Card = styled(MuiCard)(({ theme }) => ({
+export const FormCard = styled(MuiCard)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     alignSelf: 'center',
@@ -21,7 +21,7 @@ export const Card = styled(MuiCard)(({ theme }) => ({
     }),
 }));
 
-export const Container = styled(Stack)(({ theme }) => ({
+export const FormContainer = styled(Stack)(({ theme }) => ({
     height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
     minHeight: '100%',
     padding: theme.spacing(2),

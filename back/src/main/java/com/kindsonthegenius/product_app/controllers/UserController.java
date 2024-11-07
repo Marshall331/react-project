@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kindsonthegenius.product_app.model.LoginRequest;
+import com.kindsonthegenius.product_app.model.PasswordResetRequest;
 import com.kindsonthegenius.product_app.model.User;
 import com.kindsonthegenius.product_app.services.UserService;
 
@@ -81,10 +82,25 @@ public class UserController {
         }
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody() String email) {
+    @PostMapping("/reset-password-email")
+    public ResponseEntity<String> resetPasswordEmail(@RequestBody() String email) {
         try {
-            String result = userService.resetPassword(email);
+            String result = userService.SendResetPasswordEmail(email);
+            if (result.equals("")) {
+                return ResponseEntity.ok("Email send successfully!");
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unknown error occurred, error :  + e");
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody()PasswordResetRequest request) {
+        try {
+            String result = userService.resetPassword(request);
             if (result.equals("")) {
                 return ResponseEntity.ok("Reset successful!");
             } else {

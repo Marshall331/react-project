@@ -10,9 +10,9 @@ import { useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import { useAuth } from '@/hooks/useAuth';
-import { resetPassword as resetPasswordAPI} from '@/services/AuthService.jsx'
+import { sendResetPasswordEmail as sendResetPasswordEmailAPI} from '@/services/AuthService.jsx'
 
-function ForgotPassword({ open, handleClose, handleEmailSend }) {
+export default function ForgotPasswordDialog({ open, handleClose, handleEmailSend }) {
 
   const { resetPassword } = useAuth();
 
@@ -28,7 +28,7 @@ function ForgotPassword({ open, handleClose, handleEmailSend }) {
     setLoading(true)
 
     try {
-      const response = await resetPasswordAPI(email)
+      const response = await sendResetPasswordEmailAPI(email)
 
       if (response.status == 200) {
         resetPassword()
@@ -134,5 +134,3 @@ function ForgotPassword({ open, handleClose, handleEmailSend }) {
 
   );
 }
-
-export default ForgotPassword;

@@ -6,16 +6,16 @@ import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import ForgotPassword from './ForgotPassword';
+import ForgotPassword from './ForgotPasswordDialog';
 import { useAuth } from '@/hooks/useAuth';
 import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Card, Container } from '../Container';
+import { FormCard, FormContainer } from '../FormContainer';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
 import { login as loginAPI } from '@/services/AuthService.jsx'
 import Confirmation from '../../../utils/Confirmation';
 
-export default function SignIn() {
+export default function SignInForm() {
 
   const { login } = useAuth();
 
@@ -129,14 +129,22 @@ export default function SignIn() {
   };
 
   return (
-    <Container direction="column" justifyContent="space-between">
+    <FormContainer direction="column" justifyContent="space-between">
 
       {
-        (resetEmailSend ? <Confirmation text={"Un e-mail vous a été envoyé pour réintialiser votre mot de passe."} /> : "")
+        (resetEmailSend ? <Confirmation text={"Un e-mail vous a été envoyé pour réinitialiser votre mot de passe."} /> : "")
       }
 
       <ThemeSwitch />
-      <Card variant="outlined">
+
+      <Link
+        href="/reset-password/test"
+        sx={{ alignSelf: 'center' }}
+      >
+        RESET TEST (TO DELETE)
+      </Link>
+
+      <FormCard variant="outlined">
         <Typography
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', textAlign: 'center' }}
         >
@@ -222,7 +230,7 @@ export default function SignIn() {
             </span>
           </Typography>
         </Box>
-      </Card>
-    </Container>
+      </FormCard>
+    </FormContainer>
   );
 }

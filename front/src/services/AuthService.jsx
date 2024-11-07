@@ -12,11 +12,16 @@ export const createAccount = async (account) => {
     return response
 }
 
-export const resetPassword = async (email) => {
-    const response = await axios.post(API_URL + '/reset-password', email, {
+export const sendResetPasswordEmail = async (email) => {
+    const response = await axios.post(API_URL + '/reset-password-email', email, {
         headers: {
             'Content-Type': 'text/plain'
         }
     })
+    return response
+}
+
+export const resetPassword = async (request) => {
+    const response = await axios.post(API_URL + '/reset-password', request)
     return response
 }

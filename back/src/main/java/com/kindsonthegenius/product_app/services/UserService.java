@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kindsonthegenius.product_app.model.PasswordResetRequest;
 import com.kindsonthegenius.product_app.model.User;
 import com.kindsonthegenius.product_app.repositories.UserRepository;
 import com.resend.Resend;
@@ -73,19 +74,19 @@ public class UserService {
     }
 
     public User getUserFromEmail(String email) {
-
         User user = userRepository.findByEmail(email);
-
         return (user == null || !(user.getEmail().equals(email))) ? null : user;
     }
 
-    public String resetPassword(String email) {
+    public String SendResetPasswordEmail(String email) {
         String result = "";
         User user = getUserFromEmail(email);
 
         if (user == null) {
             result += "Ce compte n\'existe pas. \n";
         } else {
+            // SENDING THE EMAIL HERE
+
             // user.setResetPasswordToken(GenerateRandomToken.generate());
 
             // result += sendPasswordResetEmail(user.getUsername(), user.getResetPasswordToken(), user.getEmail());
@@ -128,5 +129,25 @@ public class UserService {
         } catch (ResendException e) {
             return "Une erreur est survenue lors de l\'envoi du mail.";
         }
+    }
+
+    public String resetPassword(PasswordResetRequest request) {
+        String result = "";
+        User user = verifyResetToken(request.getResetToken());
+
+        if (user != null) {
+            user.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
+            user.setResetPasswordToken(null);
+            userRepository.save(user);
+        } else {
+            result += "La demande de réinitialisation n\'a pas été trouvé, merci de soumettre une nouvelle demande'. \n";
+        }
+
+        return result;
+    }
+
+    public User verifyResetToken(String token) {
+        User user = userRepository.findByResetPasswordToken(token);
+        return (user == null) ? null : user;
     }
 }

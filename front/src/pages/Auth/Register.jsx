@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import SignUp from '@/components/Auth/SignUp/SignUp';
+import SignUpForm from '../../components/Auth/SignUp/SignUpForm';
 
 function Register() {
 
@@ -13,7 +13,7 @@ function Register() {
 
     return (
         <>
-            <SignUp />
+            <SignUpForm />
         </>
     );
 }

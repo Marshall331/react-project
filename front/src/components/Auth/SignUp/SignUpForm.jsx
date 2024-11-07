@@ -7,12 +7,12 @@ import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
-import { Card, Container } from '../Container';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
 import { createAccount as createAccountAPI } from '@/services/AuthService.jsx'
 import { useAuth } from '@/hooks/useAuth';
+import { FormCard, FormContainer } from '../FormContainer';
 
-export default function SignUp() {
+export default function SignUpForm() {
 
   const { createAccount } = useAuth();
 
@@ -154,11 +154,11 @@ export default function SignUp() {
   }
 
   return (
-    <Container direction="column" justifyContent="space-between">
+    <FormContainer direction="column" justifyContent="space-between">
 
       <ThemeSwitch />
 
-      <Card variant="outlined">
+      <FormCard variant="outlined">
         <Typography
 
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', textAlign: 'center' }}
@@ -288,8 +288,8 @@ export default function SignUp() {
             </span>
           </Typography>
         </Box>
-      </Card>
-    </Container>
+      </FormCard>
+    </FormContainer>
   );
 }
 
