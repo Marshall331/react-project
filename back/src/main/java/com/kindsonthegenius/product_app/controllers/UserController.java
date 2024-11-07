@@ -54,7 +54,8 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error occurred, error : " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unknown error occurred, error : " + e);
         }
     }
 
@@ -75,7 +76,23 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unknown error occurred, error : " + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unknown error occurred, error : " + e);
+        }
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody() String email) {
+        try {
+            String result = userService.resetPassword(email);
+            if (result.equals("")) {
+                return ResponseEntity.ok("Reset successful!");
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unknown error occurred, error :  + e");
         }
     }
 }

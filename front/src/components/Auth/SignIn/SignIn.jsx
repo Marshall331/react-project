@@ -12,7 +12,7 @@ import Alert from '@mui/material/Alert';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Card, Container } from '../Container';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
-import { loginToApp as loginAPI } from '@/services/AuthService.jsx'
+import { login as loginAPI } from '@/services/AuthService.jsx'
 
 export default function SignIn() {
 

@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.kindsonthegenius.product_app.model.User;
 import com.kindsonthegenius.product_app.repositories.UserRepository;
+import com.kindsonthegenius.product_app.utils.GenerateRandomToken;
+import com.resend.Resend;
+import com.resend.core.exception.ResendException;
+import com.resend.services.emails.model.CreateEmailOptions;
 
 @Service
 public class UserService {
@@ -15,7 +19,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, BCryptPasswordEncoder bCryptPasswordEncoder1) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+            BCryptPasswordEncoder bCryptPasswordEncoder1) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
     }
@@ -55,17 +60,74 @@ public class UserService {
     public String authenticate(String email, String password) {
 
         String result = "";
-        User user = userRepository.findByEmail(email);
+        User user = getUserFromEmail(email);
 
-        if (user == null || !user.getEmail().equals(email)) {
-            result += "Ce compte n\'existe pas. \n";
-        } else {
+        if (user != null) {
             if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
                 result += "Le mot de passe est incorrect. \n";
             }
+        } else {
+            result += "Ce compte n\'existe pas. \n";
         }
 
         return result;
     }
 
+    public User getUserFromEmail(String email) {
+
+        User user = userRepository.findByEmail(email);
+
+        return (user == null || !(user.getEmail().equals(email))) ? null : user;
+    }
+
+    public String resetPassword(String email) {
+        String result = "";
+        User user = getUserFromEmail(email);
+
+        if (user == null) {
+            result += "Ce compte n\'existe pas. \n";
+        } else {
+            user.setResetPasswordToken(GenerateRandomToken.generate());
+
+            result += sendPasswordResetEmail(user.getUsername(), user.getResetPasswordToken(), user.getEmail());
+            userRepository.save(user);
+        }
+
+        return result;
+    }
+
+    public static String sendPasswordResetEmail(String username, String resetToken, String sendTo) {
+        Resend resend = new Resend("re_UYoL3aD8_Boy9gDu3dkkzYEgsSn713Bsa");
+
+        String htmlContent = "<html><body style='background-color:#f6f9fc;padding:10px 0;'>"
+                + "<div style='background-color:#ffffff;border:1px solid #f0f0f0;padding:45px;'>"
+                + "<p style='font-size:16px;font-family:\"Open Sans\", sans-serif;font-weight:300;color:#404040;line-height:26px;'>"
+                + "Bonjour " + username + ",</p>"
+                + "<p style='font-size:16px;font-family:\"Open Sans\", sans-serif;font-weight:300;color:#404040;line-height:26px;'>"
+                + "Quelqu'un a récemment demandé un changement de mot de passe pour votre compte."
+                + " Si c'était vous, vous pouvez définir un nouveau mot de passe en suivant ce lien :</p>"
+                + "<a href='http://localhost:5173/reset-password?resetToken=" + resetToken + "' "
+                + "style='background-color:#007ee6;border-radius:4px;color:#fff;font-family:\"Open Sans\", Arial;font-size:16px;text-decoration:none;padding:14px 7px;width:100%;text-align:center;display:block;'>"
+                + "Réinitialiser mon mot de passe</a>"
+                + "<p style='font-size:16px;font-family:\"Open Sans\", sans-serif;font-weight:300;color:#404040;line-height:26px;'>"
+                + "Si vous ne souhaitez pas changer votre mot de passe ou si vous n'avez pas demandé ce changement, ignorez et supprimez simplement ce message.</p>"
+                + "<p style='font-size:16px;font-family:\"Open Sans\", sans-serif;font-weight:300;color:#404040;line-height:26px;'>"
+                + "Pour sécuriser votre compte, veuillez ne pas transférer cet e-mail à qui que ce soit.</p>"
+                + "<p style='font-size:16px;font-family:\"Open Sans\", sans-serif;font-weight:300;color:#404040;line-height:26px;'>Bonne journée !</p>"
+                + "</div></body></html>";
+
+        CreateEmailOptions params = CreateEmailOptions.builder()
+                .from("Acme <onboarding@resend.dev>")
+                .to(sendTo)
+                .subject("Réinitialiser votre mot de passe")
+                .html(htmlContent)
+                .build();
+
+        try {
+            resend.emails().send(params);
+            return "";
+        } catch (ResendException e) {
+            return "Une erreur est survenue lors de l\'envoi du mail.";
+        }
+    }
 }
