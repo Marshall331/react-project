@@ -15,7 +15,7 @@ export default function PasswordResetForm({ resetToken }) {
 
     const [loading, setLoading] = useState(false);
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const [resetFailed, setResetFailed] = useState(false);
     const [resetFailedMessage, setResetFailedMessage] = useState('');
