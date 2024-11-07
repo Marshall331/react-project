@@ -15,7 +15,7 @@ export default function PasswordResetForm({ resetToken }) {
 
     const [loading, setLoading] = useState(false);
 
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
@@ -65,10 +65,11 @@ export default function PasswordResetForm({ resetToken }) {
             const response = await resetPasswordAPI(reset);
 
             if (response.status === 200) {
-                console.log(response.data)
                 setLoading(false);
                 setResetFailed(false);
                 setResetFailedMessage('');
+
+                setOpen(true);
             }
 
         } catch (error) {

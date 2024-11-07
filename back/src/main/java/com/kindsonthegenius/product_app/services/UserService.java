@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kindsonthegenius.product_app.model.PasswordResetRequest;
 import com.kindsonthegenius.product_app.model.User;
 import com.kindsonthegenius.product_app.repositories.UserRepository;
+import com.kindsonthegenius.product_app.utils.GenerateRandomToken;
 import com.resend.Resend;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.CreateEmailOptions;
@@ -87,10 +88,10 @@ public class UserService {
         } else {
             // SENDING THE EMAIL HERE
 
-            // user.setResetPasswordToken(GenerateRandomToken.generate());
+            user.setResetPasswordToken(GenerateRandomToken.generate());
 
-            // result += sendPasswordResetEmail(user.getUsername(), user.getResetPasswordToken(), user.getEmail());
-            // userRepository.save(user);
+            result += sendPasswordResetEmail(user.getUsername(), user.getResetPasswordToken(), user.getEmail());
+            userRepository.save(user);
         }
 
         return result;
@@ -106,7 +107,7 @@ public class UserService {
                 + "<p style='font-size:16px;font-family:\"Open Sans\", sans-serif;font-weight:300;color:#404040;line-height:26px;'>"
                 + "Quelqu'un a récemment demandé un changement de mot de passe pour votre compte."
                 + " Si c'était vous, vous pouvez définir un nouveau mot de passe en suivant ce lien :</p>"
-                + "<a href='http://localhost:5173/reset-password?resetToken=" + resetToken + "' "
+                + "<a href='http://localhost:5173/reset-password/" + resetToken + "' "
                 + "style='background-color:#007ee6;border-radius:4px;color:#fff;font-family:\"Open Sans\", Arial;font-size:16px;text-decoration:none;padding:14px 7px;width:100%;text-align:center;display:block;'>"
                 + "Réinitialiser mon mot de passe</a>"
                 + "<p style='font-size:16px;font-family:\"Open Sans\", sans-serif;font-weight:300;color:#404040;line-height:26px;'>"
@@ -140,7 +141,7 @@ public class UserService {
             user.setResetPasswordToken(null);
             userRepository.save(user);
         } else {
-            result += "La demande de réinitialisation n\'a pas été trouvé, merci de soumettre une nouvelle demande'. \n";
+            result += "La demande de réinitialisation n\'a pas été trouvé, merci de soumettre une nouvelle demande. \n";
         }
 
         return result;
