@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.kindsonthegenius.product_app.model.User;
 import com.kindsonthegenius.product_app.repositories.UserRepository;
-import com.kindsonthegenius.product_app.utils.GenerateRandomToken;
 import com.resend.Resend;
 import com.resend.core.exception.ResendException;
 import com.resend.services.emails.model.CreateEmailOptions;
@@ -87,10 +86,10 @@ public class UserService {
         if (user == null) {
             result += "Ce compte n\'existe pas. \n";
         } else {
-            user.setResetPasswordToken(GenerateRandomToken.generate());
+            // user.setResetPasswordToken(GenerateRandomToken.generate());
 
-            result += sendPasswordResetEmail(user.getUsername(), user.getResetPasswordToken(), user.getEmail());
-            userRepository.save(user);
+            // result += sendPasswordResetEmail(user.getUsername(), user.getResetPasswordToken(), user.getEmail());
+            // userRepository.save(user);
         }
 
         return result;

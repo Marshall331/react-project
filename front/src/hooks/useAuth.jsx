@@ -40,11 +40,11 @@ export const AuthProvider = ({ children }) => {
     };
 
     const resetPassword = () => {
-        navigate('/');
+        // navigate('/');
 
-        setTimeout(() => {
-            navigate('/login?resetPassword=true');
-        }, 100);
+        // setTimeout(() => {
+        //     navigate('/login?resetPassword=true');
+        // }, 100);
     };
 
     return (

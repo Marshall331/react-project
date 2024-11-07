@@ -9,7 +9,6 @@ function Login() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const createdAccount = queryParams.get('createdAccount') === 'true';
-    const resetPassword = queryParams.get('resetPassword') === 'true';
 
     useEffect(() => {
         document.title = 'Connexion';
@@ -23,9 +22,6 @@ function Login() {
             <SignIn />
             {
                 (createdAccount ? <Confirmation text={"Votre compte a bien été créé, vous pouvez à présent vous connectez."} /> : "")
-            }
-            {
-                (resetPassword ? <Confirmation text={"Un e-mail vous a été envoyé pour réintialiser votre mot de passe."} /> : "")
             }
         </>
     );

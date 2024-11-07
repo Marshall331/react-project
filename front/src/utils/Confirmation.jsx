@@ -15,7 +15,7 @@ export default function Confirmation({ text }) {
 
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={7500} onClose={handleClose}
+      <Snackbar open={open} autoHideDuration={15000} onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Alert

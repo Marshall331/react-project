@@ -13,6 +13,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Card, Container } from '../Container';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
 import { login as loginAPI } from '@/services/AuthService.jsx'
+import Confirmation from '../../../utils/Confirmation';
 
 export default function SignIn() {
 
@@ -30,14 +31,21 @@ export default function SignIn() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
   const [open, setOpen] = useState(false);
+  const [resetEmailSend, setResetEmailSend] = useState(false);
 
   const handleClickOpen = () => {
+    setResetEmailSend(false);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleEmailSend = () => {
+    setResetEmailSend(true);
+  }
+
 
   const handleSubmit = async (email, password, rememberMe) => {
     setLoading(true)
@@ -122,6 +130,11 @@ export default function SignIn() {
 
   return (
     <Container direction="column" justifyContent="space-between">
+
+      {
+        (resetEmailSend ? <Confirmation text={"Un e-mail vous a été envoyé pour réintialiser votre mot de passe."} /> : "")
+      }
+
       <ThemeSwitch />
       <Card variant="outlined">
         <Typography
@@ -186,7 +199,7 @@ export default function SignIn() {
             </Link>
           </Box>
 
-          <ForgotPassword open={open} handleClose={handleClose} />
+          <ForgotPassword open={open} handleClose={handleClose} handleEmailSend={handleEmailSend} />
           <LoadingButton
             type='submit'
             color="primary"

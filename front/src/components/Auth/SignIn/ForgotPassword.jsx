@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -13,7 +12,7 @@ import Alert from '@mui/material/Alert';
 import { useAuth } from '@/hooks/useAuth';
 import { resetPassword as resetPasswordAPI} from '@/services/AuthService.jsx'
 
-function ForgotPassword({ open, handleClose }) {
+function ForgotPassword({ open, handleClose, handleEmailSend }) {
 
   const { resetPassword } = useAuth();
 
@@ -33,6 +32,7 @@ function ForgotPassword({ open, handleClose }) {
 
       if (response.status == 200) {
         resetPassword()
+        handleEmailSend()
         handleClose()
       }
 
@@ -134,10 +134,5 @@ function ForgotPassword({ open, handleClose }) {
 
   );
 }
-
-ForgotPassword.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
 
 export default ForgotPassword;
