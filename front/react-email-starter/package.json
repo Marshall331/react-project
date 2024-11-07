@@ -1,0 +1,20 @@
+{
+  "name": "react-email-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "email dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "react-email": "3.0.2"
+  },
+  "dependencies": {
+    "@react-email/components": "0.0.27",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}
