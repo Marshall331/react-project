@@ -9,13 +9,17 @@ import { ThemeProvider } from './hooks/useTheme.jsx';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}>
       <ThemeProvider>
         <AuthProvider>
           <Content />
         </AuthProvider>
       </ThemeProvider>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 
