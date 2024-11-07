@@ -15,11 +15,7 @@ export default function PasswordResetForm({ resetToken }) {
 
     const [loading, setLoading] = useState(false);
 
-    const [open, setOpen] = useState(false);
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const [open, setOpen] = useState(true);
 
     const [resetFailed, setResetFailed] = useState(false);
     const [resetFailedMessage, setResetFailedMessage] = useState('');
@@ -140,7 +136,7 @@ export default function PasswordResetForm({ resetToken }) {
 
                     </FormControl>
 
-                    <ConfirmationDialog open={open} handleClose={handleClose} />
+                    <ConfirmationDialog open={open} />
 
                     <LoadingButton
                         type='submit'
