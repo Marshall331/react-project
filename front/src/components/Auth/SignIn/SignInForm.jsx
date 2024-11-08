@@ -63,9 +63,7 @@ export default function SignInForm() {
         setConnectionFailed(false);
         setConnectionFailedMessage('');
 
-        console.log(response)
-
-        // login(rememberMe)
+        login(response.data, rememberMe)
       }
     } catch (error) {
       setLoading(false);

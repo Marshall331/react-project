@@ -1,26 +1,29 @@
 import { BrowserRouter } from 'react-router-dom';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import Loading from './utils/Loading';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import Header from './layout/Header';
-import PrivateRoutes from './routes/PrivateRoutes';
-import PublicRoutes from './routes/PublicRoutes';
 import { ThemeProvider, useTheme } from './hooks/useTheme';
 import { Container } from '@mui/material';
+import { lazy } from 'react';
+
+const PrivateRoutes = lazy(() => import('./routes/PrivateRoutes'));
+const PublicRoutes = lazy(() => import('./routes/PublicRoutes'));
 
 export default function App() {
   return (
-    <BrowserRouter
-      future={{
-        v7_relativeSplatPath: true,
-        v7_startTransition: true,
-      }}>
-      <ThemeProvider>
+    <ThemeProvider>
+      <BrowserRouter
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
         <AuthProvider>
           <Content />
         </AuthProvider>
-      </ThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
@@ -28,32 +31,30 @@ function Content() {
   const { isAuthenticated } = useAuth();
   const { theme } = useTheme();
 
+  const themeStyles = useMemo(() => ({
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    bgcolor: theme.palette.background.default,
+    color: theme.palette.text.primary,
+  }), [theme]);
+
   return (
     <Suspense fallback={<Loading />}>
-      {isAuthenticated ? (
+      <Container
+        maxWidth="false"
+        disableGutters
+        sx={themeStyles}
+      >
+        {isAuthenticated ? <Header /> : ""}
         <Container
-          maxWidth="false"
-          disableGutters
-          sx={{
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            bgcolor: theme.palette.background.default,
-            color: theme.palette.text.primary
-          }}
+          component="main"
+          maxWidth="xl"
+          sx={{ mt: 4 }}
         >
-          <Header />
-          <Container
-            component="main"
-            maxWidth="xl"
-            sx={{ mt: 4 }}
-          >
-            <PrivateRoutes />
-          </Container>
+          {isAuthenticated ? <PrivateRoutes /> : <PublicRoutes />}
         </Container>
-      ) : (
-        <PublicRoutes />
-      )}
+      </Container>
     </Suspense>
   );
 }

@@ -11,7 +11,7 @@ export default function PrivateRoutes() {
             <Route path="/*" element={<Home />} />
             <Route path="/solo" element={<Solo />} />
             <Route path="/multiplayer" element={<Multiplayer />} />
-            <Route path="/admin/users*" element={<Users />} />
+            <Route path="/admin/users" element={<Users />} />
         </Routes>
     );
 }

@@ -20,14 +20,17 @@ import Divider from '@mui/material/Divider';
 const pages = [
     { name: 'Solo', path: '/solo' },
     { name: 'Multijoueur', path: '/multiplayer' },
-];
+]
+
 const settings = [
     { name: 'Mon compte', path: '/account' },
     { name: 'Utilisateurs', path: '/admin/users' },
-];
+]
 
 function Header() {
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
+
+    const avatarText = user ? user.firstname[0] + user.lastname[0] : "";
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -147,7 +150,7 @@ function Header() {
                         <Tooltip title="Mon profil">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
                                 <Avatar sx={{ width: 65, height: 65 }}
-                                >DZ</Avatar>
+                                >{avatarText}</Avatar>
                             </IconButton>
                         </Tooltip>
                         <Menu

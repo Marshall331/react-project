@@ -13,8 +13,8 @@ export const AuthProvider = ({ children }) => {
     });
 
     const [user, setUser] = useState(() => {
-        const savedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
-        return savedUser ? JSON.parse(savedUser) : null;
+        const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+        return user ? JSON.parse(user) : null;
     });
 
     const login = (user, rememberMe) => {
