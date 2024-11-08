@@ -58,8 +58,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public String authenticate(String email, String password) {
-
+    public Object authenticate(String email, String password) {
         String result = "";
         User user = getUserFromEmail(email);
 
@@ -68,7 +67,11 @@ public class UserService {
                 result += "Le mot de passe est incorrect. \n";
             }
         } else {
-            result += "Ce compte n\'existe pas. \n";
+            result += "Ce compte n'existe pas. \n";
+        }
+
+        if (result.isEmpty()) {
+            return user;
         }
 
         return result;

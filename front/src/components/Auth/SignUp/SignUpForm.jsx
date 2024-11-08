@@ -101,13 +101,13 @@ export default function SignUpForm() {
     }
   }
 
-  const handleSubmit = async (username, firstName, lastName, email, password) => {
+  const handleSubmit = async (username, firstname, lastname, email, password) => {
     setLoading(true)
 
     const account = {
       username,
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       email,
       password,
     }

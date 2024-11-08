@@ -66,19 +66,19 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
         try {
-            String result = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+            Object result = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
 
-            if (result.equals("")) {
+            if (result instanceof User) {
                 session.setAttribute("user", loginRequest.getEmail());
-                return ResponseEntity.ok("Login was successful!");
+                return ResponseEntity.ok(result); 
             } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(result); 
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An unknown error occurred, error : " + e);
+                    .body("An unknown error occurred, error: " + e.getMessage());
         }
     }
 
@@ -98,7 +98,7 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody()PasswordResetRequest request) {
+    public ResponseEntity<String> resetPassword(@RequestBody() PasswordResetRequest request) {
         try {
             String result = userService.resetPassword(request);
             if (result.equals("")) {

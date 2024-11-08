@@ -12,27 +12,42 @@ export const AuthProvider = ({ children }) => {
         return localStorage.getItem('isAuthenticated') === 'true' || sessionStorage.getItem('isAuthenticated') === 'true';
     });
 
-    const login = (rememberMe) => {
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
+
+    const login = (user, rememberMe) => {
         setIsAuthenticated(true);
+        setUser(user);
+
         if (rememberMe) {
             localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('user', JSON.stringify(user));
             sessionStorage.removeItem('isAuthenticated');
+            sessionStorage.removeItem('user');
         } else {
             sessionStorage.setItem('isAuthenticated', 'true');
+            sessionStorage.setItem('user', JSON.stringify(user));
             localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('user');
         }
+        
         navigate("/");
     };
 
     const logout = () => {
         setIsAuthenticated(false);
+        setUser(null);
         localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('user');
         sessionStorage.removeItem('isAuthenticated');
+        sessionStorage.removeItem('user');
         navigate('/login');
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

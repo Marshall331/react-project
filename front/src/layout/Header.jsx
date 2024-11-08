@@ -23,6 +23,7 @@ const pages = [
 ];
 const settings = [
     { name: 'Mon compte', path: '/account' },
+    { name: 'Utilisateurs', path: '/admin/users' },
 ];
 
 function Header() {
@@ -48,7 +49,7 @@ function Header() {
 
     return (
         <AppBar position="static">
-            <Container maxWidth="xl">
+            <Container maxWidth="false">
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"
@@ -145,15 +146,12 @@ function Header() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Mon profil">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 1 }}>
-                                <Avatar
-                                    alt="Remy Sharp"
-                                    src="/static/images/avatar/2.jpg"
-                                    sx={{ width: 56, height: 56 }}
-                                />
+                                <Avatar sx={{ width: 65, height: 65 }}
+                                >DZ</Avatar>
                             </IconButton>
                         </Tooltip>
                         <Menu
-                            sx={{ mt: '70px' }}
+                            sx={{ mt: '82.5px' }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             anchorOrigin={{
@@ -169,7 +167,7 @@ function Header() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((page) => (
-                                <MenuItem disabled key={page.name} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                                     <Typography sx={{ color: 'inherit', textAlign: 'center', textDecoration: 'none', width: '100%', paddingLeft: '1em', paddingRight: '1em' }} component={Link} to={page.path}>
                                         {page.name}
                                     </Typography>
