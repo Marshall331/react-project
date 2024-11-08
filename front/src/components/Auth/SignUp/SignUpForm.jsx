@@ -9,12 +9,12 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Alert from '@mui/material/Alert';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
 import { createAccount as createAccountAPI } from '@/services/AuthService.jsx'
-import { useAuth } from '@/hooks/useAuth';
 import { FormCard, FormContainer } from '../FormContainer';
+import ConfirmationDialog from '../ConfirmationDialog';
 
 export default function SignUpForm() {
 
-  const { createAccount } = useAuth();
+  const [open, setOpen] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -120,7 +120,7 @@ export default function SignUpForm() {
         setCreationFailed(false);
         setCreationFailedMessage('');
 
-        createAccount()
+        setOpen(true);
       }
 
     } catch (error) {
@@ -264,6 +264,12 @@ export default function SignUpForm() {
             </Typography>
 
           </FormControl>
+
+          <ConfirmationDialog
+            open={open}
+            text='Votre compte a bien été créé, vous pouvez à présent vous connecter !'
+            redirectPath={'/login'}
+          />
 
           <LoadingButton
             type='submit'

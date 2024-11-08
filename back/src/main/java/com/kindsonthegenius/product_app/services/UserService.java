@@ -141,7 +141,7 @@ public class UserService {
             user.setResetPasswordToken(null);
             userRepository.save(user);
         } else {
-            result += "La demande de réinitialisation n\'a pas été trouvé, merci de soumettre une nouvelle demande. \n";
+            result += "La demande de réinitialisation a expiré, merci de soumettre une nouvelle demande. \n";
         }
 
         return result;

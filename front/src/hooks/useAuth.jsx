@@ -31,24 +31,8 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
     };
 
-    const createAccount = () => {
-        navigate('/');
-
-        setTimeout(() => {
-            navigate('/login?createdAccount=true');
-        }, 100);
-    };
-
-    const resetPassword = () => {
-        // navigate('/');
-
-        // setTimeout(() => {
-        //     navigate('/login?resetPassword=true');
-        // }, 100);
-    };
-
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, createAccount, resetPassword }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

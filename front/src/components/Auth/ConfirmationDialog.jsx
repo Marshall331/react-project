@@ -5,12 +5,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import { Button } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 
-export default function ConfirmationDialog({ open, handleClose }) {
+export default function ConfirmationDialog({ open, text, redirectPath }) {
 
     return (
         <Dialog
             open={open}
-            onClose={handleClose}
             PaperProps={{
                 sx: { backgroundImage: 'none' },
             }}
@@ -19,9 +18,9 @@ export default function ConfirmationDialog({ open, handleClose }) {
                 sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
             >
                 <DialogContentText sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}
-                    color='success'>
+                    color={'success'}>
                     <CheckIcon />
-                    Votre mot de passe a bien été reinitialisé !
+                    {text}
                 </DialogContentText>
             </DialogContent>
             <DialogActions sx={{ pb: 3, px: 3 }}>
@@ -31,7 +30,7 @@ export default function ConfirmationDialog({ open, handleClose }) {
                     variant="contained"
                     size='medium'
                     fullWidth
-                    href='/login'
+                    href={redirectPath}
                 >
                     Se connecter
                 </Button>

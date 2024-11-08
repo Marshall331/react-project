@@ -9,7 +9,7 @@ import Alert from '@mui/material/Alert';
 import { FormCard, FormContainer } from '../FormContainer';
 import ThemeSwitch from '../../Theme/ThemeSwitch';
 import { resetPassword as resetPasswordAPI } from '@/services/AuthService.jsx'
-import ConfirmationDialog from './ConfirmationDialog';
+import ConfirmationDialog from '../ConfirmationDialog';
 
 export default function PasswordResetForm({ resetToken }) {
 
@@ -136,7 +136,11 @@ export default function PasswordResetForm({ resetToken }) {
 
                     </FormControl>
 
-                    <ConfirmationDialog open={open} />
+                    <ConfirmationDialog
+                        open={open}
+                        text='Votre mot de passe a bien été reinitialisé !'
+                        redirectPath={'/login'}
+                    />
 
                     <LoadingButton
                         type='submit'
