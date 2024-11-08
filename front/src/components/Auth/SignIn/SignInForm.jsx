@@ -137,13 +137,6 @@ export default function SignInForm() {
 
       <ThemeSwitch />
 
-      <Link
-        href="/reset-password/test"
-        sx={{ alignSelf: 'center' }}
-      >
-        RESET TEST (TO DELETE)
-      </Link>
-
       <FormCard variant="outlined">
         <Typography
           sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', textAlign: 'center' }}
